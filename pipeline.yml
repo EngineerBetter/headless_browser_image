@@ -13,13 +13,13 @@ resources:
   source:
     repository: vito/oci-build-task
 
-- name: headless-fly-image
+- name: headless-browser-image
   type: registry-image
   icon: docker
   source:
     username: ((dockerhub_user))
     password: ((dockerhub_password))
-    repository: engineerbetter/headless-fly-image
+    repository: engineerbetter/headless-browser-image
 
 - name: version
   type: semver
@@ -63,7 +63,7 @@ jobs:
       - name: image
       run:
         path: build
-  - put: headless-fly-image
+  - put: headless-browser-image
     params:
       image: image/image.tar
       additional_tags: version/version
