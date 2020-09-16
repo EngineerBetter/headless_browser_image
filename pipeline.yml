@@ -21,6 +21,16 @@ resources:
     password: ((dockerhub_password))
     repository: engineerbetter/headless-fly-image
 
+- name: version
+  type: semver
+  source:
+    driver: git
+    uri: git@github.com:EngineerBetter/headless_browser_image.git
+    branch: version
+    file: version
+    private_key: ((github_private_key))
+    initial_version: 0.0.0
+
 jobs:
 - name: set-pipeline
   serial: true
@@ -38,6 +48,9 @@ jobs:
       trigger: true
       passed: [set-pipeline]
     - get: oci-task-image
+    - get: version
+      params:
+        bump: patch
   - task: build-image
     privileged: true
     image: oci-task-image
@@ -51,4 +64,9 @@ jobs:
       run:
         path: build
   - put: headless-fly-image
-    params: {image: image/image.tar}
+    params:
+      image: image/image.tar
+      additional_tags: version/version
+  - put: version
+    params:
+      file: version/version
