@@ -1,5 +1,5 @@
 resources:
-- name: headless_browser_image_repo
+- name: headless-browser-image-repo
   type: git
   icon: github
   source:
@@ -7,48 +7,48 @@ resources:
     branch: master
     private_key: ((github_private_key))
 
-- name: oci_task_image
+- name: oci-task-image
   type: registry-image
   icon: docker
   source:
     repository: vito/oci-build-task
 
-- name: headless_fly_image
+- name: headless-fly-image
   type: registry-image
   icon: docker
   source:
     username: ((dockerhub_user))
     password: ((dockerhub_password))
-    repository: engineerbetter/headless_fly_image
+    repository: engineerbetter/headless-fly-image
 
 jobs:
-- name: set_pipeline
+- name: set-pipeline
   serial: true
   plan:
-  - get: headless_browser_image_repo
+  - get: headless-browser-image-repo
     trigger: true
   - set_pipeline: self
-    file: headless_browser_image_repo/pipeline.yml
+    file: headless-browser-image-repo/pipeline.yml
 
-- name: build_image
+- name: build-image
   serial: true
   plan:
   - in_parallel:
-    - get: headless_browser_image_repo
+    - get: headless-browser-image-repo
       trigger: true
-      passed: [set_pipeline]
-    - get: oci_task_image
-  - task: build_image
+      passed: [set-pipeline]
+    - get: oci-task-image
+  - task: build-image
     privileged: true
-    image: oci_task_image
+    image: oci-task-image
     config:
       platform: linux
       inputs:
-      - name: headless_browser_image_repo
+      - name: headless-browser-image-repo
         path: .
       outputs:
       - name: image
       run:
         path: build
-  - put: headless_fly_image
+  - put: headless-fly-image
     params: {image: image/image.tar}
