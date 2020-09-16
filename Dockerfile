@@ -32,7 +32,7 @@ RUN go get github.com/onsi/ginkgo/ginkgo \
 # Check available versions here: https://www.ubuntuupdates.org/package/google_chrome/stable/main/base/google-chrome-stable
 ARG CHROME_VERSION="85.0.4183.102-1"
 RUN wget --no-verbose -O /tmp/chrome.deb http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_VERSION}_amd64.deb \
-  && apt install -y /tmp/chrome.deb \
+  && apt-get install -y /tmp/chrome.deb \
   && rm /tmp/chrome.deb
 RUN wget -N http://chromedriver.storage.googleapis.com/85.0.4183.87/chromedriver_linux64.zip \
   && unzip chromedriver_linux64.zip \
