@@ -19,7 +19,7 @@ resources:
   source:
     username: ((dockerhub_user))
     password: ((dockerhub_password))
-    repository: engineerbetter/headless-browser-image
+    repository: engineerbetter/headless-browser
 
 - name: version
   type: semver
