@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends --fix-missing \
   git \
   gnupg2 \
   ca-certificates \
+  build-essential \
   && rm -rf /var/lib/apt/lists/*
 
 # install go
