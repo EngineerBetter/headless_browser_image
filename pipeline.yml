@@ -1,0 +1,54 @@
+resources:
+- name: headless_browser_image_repo
+  type: git
+  icon: github
+  source:
+    uri: git@github.com:EngineerBetter/pcfops-docker.git
+    branch: master
+    private_key: ((github_private_key))
+
+- name: oci_task_image
+  type: registry-image
+  icon: docker
+  source:
+    repository: vito/oci-build-task
+
+- name: headless_fly_image
+  type: registry-image
+  icon: docker
+  source:
+    username: ((dockerhub_user))
+    password: ((dockerhub_password))
+    repository: engineerbetter/headless_fly_image
+
+jobs:
+- name: set_pipeline
+  serial: true
+  plan:
+  - get: headless_browser_image_repo
+    trigger: true
+  - set_pipeline: self
+    file: headless_browser_image_repo/pipeline.yml
+
+- name: build_image
+  serial: true
+  plan:
+  - in_parallel:
+    - get: headless_browser_image_repo
+      trigger: true
+      passed: [set_pipeline]
+    - get: oci_task_image
+  - task: build_image
+    privileged: true
+    image: oci_task_image
+    config:
+      platform: linux
+      inputs:
+      - name: headless_browser_image_repo
+        path: .
+      outputs:
+      - name: image
+      run:
+        path: build
+  - put: headless_fly_image
+    params: {image: image/image.tar}
