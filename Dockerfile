@@ -29,12 +29,10 @@ RUN go get github.com/onsi/ginkgo/ginkgo \
   github.com/sclevine/agouti
 
 # install chrome
-# Check available versions here: https://www.ubuntuupdates.org/package/google_chrome/stable/main/base/google-chrome-stable
-ARG CHROME_VERSION="85.0.4183.102-1"
-RUN wget --no-verbose -O /tmp/chrome.deb http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_85.0.4183.102-1_amd64.deb \
-  && dpkg -i /tmp/chrome.deb \
-  && apt-get install -f \
-  && rm /tmp/chrome.deb
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+RUN sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  google-chrome-stable
 RUN wget -N http://chromedriver.storage.googleapis.com/85.0.4183.87/chromedriver_linux64.zip \
   && unzip chromedriver_linux64.zip \
   && chmod +x chromedriver \
