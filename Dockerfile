@@ -20,10 +20,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends --fix-missing \
   git \
   && rm -rf /var/lib/apt/lists/*
 
-# install dbus - chromedriver needs this to talk to google-chrome
-RUN ln -s /bin/dbus-daemon /usr/bin/dbus-daemon     # /etc/init.d/dbus has the wrong location
-RUN ln -s /bin/dbus-uuidgen /usr/bin/dbus-uuidgen   # /etc/init.d/dbus has the wrong location
-
 # install chrome
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
 RUN sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
