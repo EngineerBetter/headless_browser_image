@@ -16,9 +16,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends --fix-missing \
 
 # install go
 RUN wget -q https://golang.org/dl/go1.15.2.linux-amd64.tar.gz \
-  && tar -xvf go1.13.3.linux-amd64.tar.gz \
+  && tar -xvf go1.15.2.linux-amd64.tar.gz \
   && mv go /usr/local \
-  && rm -f go1.13.3.linux-amd64.tar.gz
+  && rm -f go1.15.2.linux-amd64.tar.gz
 
 ENV GOPATH /go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
