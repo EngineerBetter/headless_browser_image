@@ -1,12 +1,4 @@
-FROM golang:latest as go
-
-RUN go get github.com/onsi/ginkgo/ginkgo \
-  github.com/onsi/gomega \
-  github.com/sclevine/agouti
-
 FROM ubuntu:18.04
-
-COPY --from=go /go/bin/ /usr/bin/
 
 ENV LANG="C.UTF-8"
 
@@ -22,6 +14,19 @@ RUN apt-get update && apt-get install -y --no-install-recommends --fix-missing \
   ca-certificates \
   && rm -rf /var/lib/apt/lists/*
 
+# install go
+RUN wget -q https://golang.org/dl/go1.15.2.linux-amd64.tar.gz \
+  && tar -xvf go1.13.3.linux-amd64.tar.gz \
+  && mv go /usr/local \
+  && rm -f go1.13.3.linux-amd64.tar.gz
+
+ENV GOPATH /go
+ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
+
+RUN go get github.com/onsi/ginkgo/ginkgo \
+  github.com/onsi/gomega \
+  github.com/sclevine/agouti
+
 # install chrome
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
 RUN sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
@@ -30,4 +35,5 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN wget -N http://chromedriver.storage.googleapis.com/86.0.4240.22/chromedriver_linux64.zip \
   && unzip chromedriver_linux64.zip \
   && chmod +x chromedriver \
-  && mv -f chromedriver /usr/local/bin/chromedriver
+  && mv -f chromedriver /usr/local/bin/chromedriver \
+  && rm -f chromedriver_linux64.zip
