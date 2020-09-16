@@ -3,7 +3,7 @@ resources:
   type: git
   icon: github
   source:
-    uri: git@github.com:EngineerBetter/pcfops-docker.git
+    uri: git@github.com:EngineerBetter/headless_browser_image.git
     branch: master
     private_key: ((github_private_key))
 
