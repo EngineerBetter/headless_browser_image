@@ -19,6 +19,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends --fix-missing \
   dbus-x11 \
   git \
   gnupg2 \
+  ca-certificates \
   && rm -rf /var/lib/apt/lists/*
 
 # install chrome
