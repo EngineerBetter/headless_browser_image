@@ -13,7 +13,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends --fix-missing \
   gnupg2 \
   ca-certificates \
   build-essential \
-  oathtool \
   && rm -rf /var/lib/apt/lists/*
 
 # install go
@@ -27,7 +26,8 @@ ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 
 RUN go get github.com/onsi/ginkgo/ginkgo \
   github.com/onsi/gomega \
-  github.com/sclevine/agouti
+  github.com/sclevine/agouti \
+  github.com/xlzd/gotp
 
 # install chrome
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
