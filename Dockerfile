@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends --fix-missing \
   gnupg2 \
   ca-certificates \
   build-essential \
+  oathtool \
   && rm -rf /var/lib/apt/lists/*
 
 # install go
